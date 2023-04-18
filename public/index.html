@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<meta charset='UTF-8'>
+	<title>Title</title>
+</head>
+<body>
+<h1>Taco Service</h1>
+<div>
+	<h3>Create your taco</h3>
+<form method='post' action='/tacos/create'>
+	<label for='name'>Name:</label>
+	<input type='text' id='name' name='name'/>
+	<h4>INGREDIENTS</h4>
+	<h4>Sauce:</h4>
+
+	<label for='ketchup'>Ketchup:</label>
+	<input type='checkbox' id='ketchup' name='ketchup' value='ketchup'><br>
+
+	<label for='mayo'>Mayonnaise:</label>
+	<input type='checkbox' id='mayo' name='mayo' value='mayo'>
+
+	<h4>Additional ingredients</h4>
+
+	<label for='cheese'>Cheese:</label>
+	<input type='number' id='cheese' name='cheese' value='0'><br><br>
+
+	<label for='tomato'>Tomato:</label>
+	<input type='number' id='tomato' name='tomato' value='0'><br><br>
+
+	<label for='corn'>Corn:</label>
+	<input type='number' id='corn' name='corn' value='0'><br><br>
+
+	<label for='salad'>Salad:</label>
+	<input type='number' id='salad' name='salad' value='0'><br><br>
+	<input type='submit' value='Submit'>
+</form>
+</div>
+<script>
+let createTacoForm = document.forms[0];
+const baseUrl = 'http://localhost:8000/tacos';
+createTacoForm.addEventListener('submit', async (e) => {
+	e.preventDefault();
+	let createdTaco = {ingredients: []};
+	for(let el of createTacoForm.elements) {
+		if(el.type === 'submit')
+			break;
+		if(el.type === 'text') {
+			createdTaco[el.name] = el.value;
+			continue;
+		}
+		if(el.type === 'checkbox') {
+			el.checked === true ? createdTaco.ingredients.push({'name': [el.name][0], 'amount': 1}) : true;
+			continue;
+		}
+		if(el.value !== '0')
+			createdTaco.ingredients.push({'name': [el.name][0], 'amount': Number(el.value)});
+	}
+	console.log(createdTaco);
+	const res = await fetch(baseUrl + '/create', {
+		method: 'POST',
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(createdTaco)
+	});
+	console.log(res);
+});
+</script>
+</body>
+</html>

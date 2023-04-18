@@ -7,6 +7,9 @@ import { json } from 'body-parser';
 import { MongooseService } from './database/mongoose.service';
 import "reflect-metadata";
 import { IErrorMiddleware } from './errors/error.middleware.interface';
+import { IUsersController } from './users/users.interface';
+import { UsersController } from './users/users.controller';
+import { TacosController } from './tacos/tacos.controller';
 @injectable()
 export class App {
 	public app: Express;
@@ -15,7 +18,9 @@ export class App {
 
 	constructor(@inject(TYPES.ILogger) private logger: ILogger,
 							@inject(TYPES.MongooseService) private mongoClient: MongooseService,
-							@inject(TYPES.IErrorMiddleware) private errorService: IErrorMiddleware) {
+							@inject(TYPES.IErrorMiddleware) private errorService: IErrorMiddleware,
+							@inject(TYPES.IUsersController) private usersController: UsersController,
+							@inject(TYPES.ITacosController) private tacosController: TacosController) {
 		this.app = express();
 		this.port = 8000;
 	}
@@ -26,7 +31,8 @@ export class App {
 	}
 
 	public useRoutes(): void {
-		// this.app.use('/users');
+		this.app.use('/users', this.usersController.router);
+		this.app.use('/tacos', this.tacosController.router);
 	}
 
 	public useExceptionFilter(): void {

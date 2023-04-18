@@ -6,17 +6,36 @@ import { inject, injectable } from 'inversify';
 import { BaseController } from '../common/base.controller';
 import { TYPES } from '../types';
 import { ILogger } from '../logger/logger.interface';
+import { ValidateMiddleware } from '../common/validate.middleware';
+import { UserDto } from './dto/user.dto';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController{
+	private userRoutes: IControllerRoute[] = [
+		{
+			path: '/login',
+			func: this.login,
+			method: 'post',
+			middlewares: [new ValidateMiddleware(UserDto)]
+		},
+
+		{
+			path: '/register',
+			func: this.login,
+			method: 'post',
+			middlewares: [new ValidateMiddleware(UserDto)]
+		}
+	];
 	constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
 		super(loggerService);
+		this.bindRouter(this.userRoutes);
 	}
 
-	login(req: Request, res: Response, next: NextFunction): void {
+	async login(req: Request<{}, {}, UserDto>, res: Response, next: NextFunction): Promise<void> {
 	}
 
-	register(req: Request, res: Response, next: NextFunction): void {
+	async register(req: Request<{}, {}, UserDto>, res: Response, next: NextFunction): Promise<void> {
+
 	}
 
 }
