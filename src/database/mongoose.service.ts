@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
-import { ILogger } from '../src/logger/logger.interface';
-import { TYPES } from '../src/types';
+import { ILogger } from '../logger/logger.interface';
+import { TYPES } from '../types';
 import {MongoClient} from 'mongodb';
 import "reflect-metadata";
 @injectable()

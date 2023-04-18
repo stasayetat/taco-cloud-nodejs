@@ -4,8 +4,9 @@ import { TYPES } from './types';
 import { ILogger } from './logger/logger.interface';
 import { Server } from 'http';
 import { json } from 'body-parser';
-import { MongooseService } from '../database/mongoose.service';
+import { MongooseService } from './database/mongoose.service';
 import "reflect-metadata";
+import { IErrorMiddleware } from './errors/error.middleware.interface';
 @injectable()
 export class App {
 	public app: Express;
@@ -13,7 +14,8 @@ export class App {
 	public server: Server;
 
 	constructor(@inject(TYPES.ILogger) private logger: ILogger,
-							@inject(TYPES.MongooseService) private mongoClient: MongooseService) {
+							@inject(TYPES.MongooseService) private mongoClient: MongooseService,
+							@inject(TYPES.IErrorMiddleware) private errorService: IErrorMiddleware) {
 		this.app = express();
 		this.port = 8000;
 	}
@@ -28,7 +30,7 @@ export class App {
 	}
 
 	public useExceptionFilter(): void {
-		// this.app.use();
+		this.app.use(this.errorService.catch.bind(this.errorService));
 	}
 
 	public async init(): Promise<void> {

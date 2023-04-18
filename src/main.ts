@@ -3,11 +3,17 @@ import { ILogger } from './logger/logger.interface';
 import { LoggerService } from './logger/logger.service';
 import { TYPES } from './types';
 import { App } from './app';
-import { MongooseService } from '../database/mongoose.service';
+import { MongooseService } from './database/mongoose.service';
+import { IUsersController } from './users/users.interface';
+import { UsersController } from './users/users.controller';
+import { IErrorMiddleware } from './errors/error.middleware.interface';
+import { ErrorService } from './errors/error.service';
 
 const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
 	bind<MongooseService>(TYPES.MongooseService).to(MongooseService).inSingletonScope();
+	bind<IUsersController>(TYPES.IUsersController).to(UsersController).inSingletonScope();
+	bind<IErrorMiddleware>(TYPES.IErrorMiddleware).to(ErrorService).inSingletonScope();
 	bind<App>(TYPES.App).to(App);
 });
 
