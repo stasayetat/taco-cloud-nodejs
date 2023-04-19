@@ -1,4 +1,7 @@
+import { TacosCreateDto } from './dto/tacos.create.dto';
+import { Taco } from './taco.entity';
+
 export interface ITacosService {
-	createTaco: (taco: Object) => Promise<object>;
-	findTaco: (id?: number, name?: string) => Promise<object>;
+	createTaco: (taco: TacosCreateDto) => Promise<Taco | null>;
+	findTaco: (name: string | undefined, id?: number | undefined) => Promise<Taco | null>;
 }

@@ -36,7 +36,14 @@
 	<input type='submit' value='Submit'>
 </form>
 </div>
+
+<div>
+	<dl>
+
+	</dl>
+</div>
 <script>
+	import {Taco} from '../src/tacos/taco.entity'
 let createTacoForm = document.forms[0];
 const baseUrl = 'http://localhost:8000/tacos';
 createTacoForm.addEventListener('submit', async (e) => {

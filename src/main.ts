@@ -11,6 +11,9 @@ import { ErrorService } from './errors/error.service';
 import { ITacosController } from './tacos/tacos.controller.interface';
 import { TacosController } from './tacos/tacos.controller';
 import { TacosService } from './tacos/tacos.service';
+import { ITacoRepository } from './tacos/tacos.repository.interface';
+import { TacoRepository } from './tacos/taco.repository';
+import { ITacosService } from './tacos/tacos.service.interface';
 
 const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
@@ -18,7 +21,8 @@ const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IUsersController>(TYPES.IUsersController).to(UsersController).inSingletonScope();
 	bind<IErrorMiddleware>(TYPES.IErrorMiddleware).to(ErrorService).inSingletonScope();
 	bind<ITacosController>(TYPES.ITacosController).to(TacosController).inSingletonScope();
-	bind<TacosService>(TYPES.TacosService).to(TacosService).inSingletonScope();
+	bind<ITacoRepository>(TYPES.ITacoRepository).to(TacoRepository).inSingletonScope();
+	bind<ITacosService>(TYPES.ITacosService).to(TacosService).inSingletonScope();
 	bind<App>(TYPES.App).to(App);
 });
 

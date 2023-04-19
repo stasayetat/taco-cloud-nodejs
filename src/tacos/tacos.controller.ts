@@ -9,6 +9,8 @@ import { IMiddleware } from '../common/middleware.interface';
 import { IControllerRoute } from '../common/route.interface';
 import { ValidateMiddleware } from '../common/validate.middleware';
 import { TacosCreateDto } from './dto/tacos.create.dto';
+import { IErrorMiddleware } from '../errors/error.middleware.interface';
+import { TacosService } from './tacos.service';
 @injectable()
 export class TacosController extends BaseController implements ITacosController{
 	tacosRoutes: IControllerRoute[] = [
@@ -24,17 +26,22 @@ export class TacosController extends BaseController implements ITacosController{
 			method: 'get'
 		}
 	];
-	constructor(@inject(TYPES.ILogger) private loggerService: ILogger ) {
+	constructor(@inject(TYPES.ILogger) private loggerService: ILogger,
+							@inject(TYPES.IErrorMiddleware) private errorMiddle: IErrorMiddleware,
+							@inject(TYPES.ITacosService) private tacoService: TacosService) {
 		super(loggerService);
 		this.bindRouter(this.tacosRoutes);
 	}
 
-	create(req: Request<{}, {}, TacosCreateDto>, res: Response, next: NextFunction): Promise<void> {
+	async create(req: Request<{}, {}, TacosCreateDto>, res: Response, next: NextFunction): Promise<void> {
 		console.log("Taco checked success" + req.body);
-		return Promise.resolve(undefined);
+		const createdTaco = await this.tacoService.createTaco(req.body);
+		console.log("Created taco: " + JSON.stringify(createdTaco));
+		res.send(createdTaco);
 	}
 
-	find(req: Request, res: Response, next: NextFunction): Promise<void> {
-		return Promise.resolve(undefined);
+	async find(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const findTaco = await this.tacoService.findTaco(req.body as string);
+		res.send(findTaco);
 	}
 }
