@@ -44,4 +44,10 @@ export class TacoRepository implements ITacoRepository{
 		this.logger.log(`Taco ${tacoName} finding in DB`);
 		return this.dataTaco.findOne({name: tacoName});
 	}
+
+	async findAllTacos(): Promise<Taco[] | null> {
+		this.logger.log('Finding all tacos');
+		const dataTacoFindAll = await this.dataTaco.find();
+		return dataTacoFindAll;
+	}
 }

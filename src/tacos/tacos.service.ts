@@ -32,5 +32,9 @@ export class TacosService implements ITacosService{
 		}
 		return this.tacoRepo.findById(id as number);
 	}
-
+	async findAllTacos(): Promise<Taco[] | null> {
+		this.logger.log(`Service find all tacos`);
+		const tacosFind = this.tacoRepo.findAllTacos();
+		return tacosFind;
+	}
 }

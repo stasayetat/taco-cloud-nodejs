@@ -65,6 +65,7 @@
 <script>
 let createTacoForm = document.forms[0];
 const baseUrl = 'http://localhost:8000/tacos';
+const recentTacos = document.getElementById('recentTacos');
 createTacoForm.addEventListener('submit', async (e) => {
 	e.preventDefault();
 	let createdTaco = {ingredients: []};
@@ -90,10 +91,7 @@ createTacoForm.addEventListener('submit', async (e) => {
 		},
 		body: JSON.stringify(createdTaco)
 	});
-	console.log(res);
 	const qwe = await res.json();
-	console.log(qwe._name + " має такі інгредієнти " + qwe._ingredients);
-	const recentTacos = document.getElementById('recentTacos');
 	let row = recentTacos.insertRow(1);
 	let cellName = row.insertCell(0);
 	let cellIngredients = row.insertCell(1);
@@ -102,6 +100,28 @@ createTacoForm.addEventListener('submit', async (e) => {
 		cellIngredients.innerHTML += `${el.name}: ${el.amount}; `;
 	}
 });
+
+window.addEventListener('load', async ()=> {
+	const res = await fetch(baseUrl + "/findAll", {
+		method: "GET"
+	});
+	const allTacos = await res.json();
+	for(let el of allTacos) {
+		if(el.name)
+			loadAllTacos(el);
+	}
+
+});
+
+function loadAllTacos(taco) {
+	let row = recentTacos.insertRow(1);
+	let cellName = row.insertCell(0);
+	let cellIngredients = row.insertCell(1);
+	cellName.innerHTML = taco.name;
+	for(let el of taco.ingredients) {
+		cellIngredients.innerHTML += `${el.name}: ${el.amount}; `;
+	}
+}
 </script>
 </body>
 </html>

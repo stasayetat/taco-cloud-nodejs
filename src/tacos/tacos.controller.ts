@@ -11,6 +11,7 @@ import { ValidateMiddleware } from '../common/validate.middleware';
 import { TacosCreateDto } from './dto/tacos.create.dto';
 import { IErrorMiddleware } from '../errors/error.middleware.interface';
 import { TacosService } from './tacos.service';
+import * as path from 'path';
 @injectable()
 export class TacosController extends BaseController implements ITacosController{
 	tacosRoutes: IControllerRoute[] = [
@@ -24,7 +25,11 @@ export class TacosController extends BaseController implements ITacosController{
 			path: '/find',
 			func: this.find,
 			method: 'get'
-		}
+		},
+		{ path: '/findAll',
+			func: this.findAll,
+			method: 'get'
+		},
 	];
 	constructor(@inject(TYPES.ILogger) private loggerService: ILogger,
 							@inject(TYPES.IErrorMiddleware) private errorMiddle: IErrorMiddleware,
@@ -46,4 +51,12 @@ export class TacosController extends BaseController implements ITacosController{
 		res.type("application/json");
 		res.json(findTaco);
 	}
+
+	async findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const allTacos = await this.tacoService.findAllTacos();
+		this.loggerService.log("All tacos found");
+		res.type("application/json");
+		res.json(allTacos);
+	}
+
 }
