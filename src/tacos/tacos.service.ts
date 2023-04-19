@@ -37,4 +37,9 @@ export class TacosService implements ITacosService{
 		const tacosFind = this.tacoRepo.findAllTacos();
 		return tacosFind;
 	}
+
+	async deleteAllTacos(): Promise<void> {
+		this.logger.log("Service delete all tacos");
+		await this.tacoRepo.deleteAllTacos();
+	}
 }

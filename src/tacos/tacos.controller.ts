@@ -30,6 +30,11 @@ export class TacosController extends BaseController implements ITacosController{
 			func: this.findAll,
 			method: 'get'
 		},
+		{
+			path: '/deleteAll',
+			func: this.deleteAll,
+			method: 'get'
+		}
 	];
 	constructor(@inject(TYPES.ILogger) private loggerService: ILogger,
 							@inject(TYPES.IErrorMiddleware) private errorMiddle: IErrorMiddleware,
@@ -57,6 +62,12 @@ export class TacosController extends BaseController implements ITacosController{
 		this.loggerService.log("All tacos found");
 		res.type("application/json");
 		res.json(allTacos);
+	}
+
+	async deleteAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+		await this.tacoService.deleteAllTacos();
+		this.loggerService.log("All tacos deleted");
+		res.status(200).send("All tacos deleted");
 	}
 
 }

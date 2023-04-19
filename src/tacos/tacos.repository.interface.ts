@@ -6,4 +6,5 @@ export interface ITacoRepository {
 	findById: (tacoId: number)=> Promise<Taco | null>;
 	findByName: (tacoName: string)=> Promise<Taco | null>;
 	findAllTacos: ()=> Promise<Taco[] | null>;
+	deleteAllTacos: ()=> Promise<void>;
 }

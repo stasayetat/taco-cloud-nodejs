@@ -50,4 +50,9 @@ export class TacoRepository implements ITacoRepository{
 		const dataTacoFindAll = await this.dataTaco.find();
 		return dataTacoFindAll;
 	}
+
+	async deleteAllTacos(): Promise<void> {
+		this.logger.log("Deleted from DB");
+		await this.dataTaco.deleteMany();
+	}
 }
