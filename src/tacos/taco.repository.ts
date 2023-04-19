@@ -34,10 +34,6 @@ export class TacoRepository implements ITacoRepository{
 		const qwe = await this.dataTaco.create(newTaco);
 		console.log(qwe);
 		return taco;
-		// const qwe = await this.dataTaco.create({
-		// 	_name: newTaco.name,
-		// 	_ingredients: newTaco.ingredients
-		// });
 	}
 
 	async findById(tacoId: number): Promise<Taco | null> {

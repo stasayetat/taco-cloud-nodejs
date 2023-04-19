@@ -3,6 +3,18 @@
 <head>
 	<meta charset='UTF-8'>
 	<title>Title</title>
+	<style>
+		.recentTacos {
+				position: absolute;
+				top: 0%;
+				left: 50%;
+				z-index: 9999;
+				width: auto;
+		}
+		table, th, td {
+        border: 1px solid black;
+		}
+	</style>
 </head>
 <body>
 <h1>Taco Service</h1>
@@ -37,13 +49,20 @@
 </form>
 </div>
 
-<div>
-	<dl>
-
-	</dl>
+<div class='recentTacos'>
+	<h1>Recent tacos</h1>
+	<table id='recentTacos'>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Ingredients</th>
+		</tr>
+		</thead>
+		<tbody id='dataTacos'>
+		</tbody>
+	</table>
 </div>
 <script>
-	import {Taco} from '../src/tacos/taco.entity'
 let createTacoForm = document.forms[0];
 const baseUrl = 'http://localhost:8000/tacos';
 createTacoForm.addEventListener('submit', async (e) => {
@@ -72,6 +91,16 @@ createTacoForm.addEventListener('submit', async (e) => {
 		body: JSON.stringify(createdTaco)
 	});
 	console.log(res);
+	const qwe = await res.json();
+	console.log(qwe._name + " має такі інгредієнти " + qwe._ingredients);
+	const recentTacos = document.getElementById('recentTacos');
+	let row = recentTacos.insertRow(1);
+	let cellName = row.insertCell(0);
+	let cellIngredients = row.insertCell(1);
+	cellName.innerHTML = qwe._name;
+	for(let el of qwe._ingredients) {
+		cellIngredients.innerHTML += `${el.name}: ${el.amount}; `;
+	}
 });
 </script>
 </body>

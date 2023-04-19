@@ -37,11 +37,13 @@ export class TacosController extends BaseController implements ITacosController{
 		console.log("Taco checked success" + req.body);
 		const createdTaco = await this.tacoService.createTaco(req.body);
 		console.log("Created taco: " + JSON.stringify(createdTaco));
-		res.send(createdTaco);
+		res.type("application/json");
+		res.json(createdTaco);
 	}
 
 	async find(req: Request, res: Response, next: NextFunction): Promise<void> {
 		const findTaco = await this.tacoService.findTaco(req.body as string);
-		res.send(findTaco);
+		res.type("application/json");
+		res.json(findTaco);
 	}
 }
