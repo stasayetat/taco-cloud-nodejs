@@ -47,7 +47,7 @@ export class TacoRepository implements ITacoRepository{
 
 	async findAllTacos(): Promise<Taco[] | null> {
 		this.logger.log('Finding all tacos');
-		const dataTacoFindAll = await this.dataTaco.find();
+		const dataTacoFindAll = await this.dataTaco.find().limit(5).sort([['_id', -1]]);
 		return dataTacoFindAll;
 	}
 

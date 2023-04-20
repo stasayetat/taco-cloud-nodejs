@@ -44,9 +44,7 @@ export class TacosController extends BaseController implements ITacosController{
 	}
 
 	async create(req: Request<{}, {}, TacosCreateDto>, res: Response, next: NextFunction): Promise<void> {
-		console.log("Taco checked success" + req.body);
 		const createdTaco = await this.tacoService.createTaco(req.body);
-		console.log("Created taco: " + JSON.stringify(createdTaco));
 		res.type("application/json");
 		res.json(createdTaco);
 	}

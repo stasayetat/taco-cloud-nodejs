@@ -16,7 +16,6 @@ export class TacosService implements ITacosService{
 		this.logger.log(`Taco ${taco.name} received`);
 		const newTaco = new Taco(taco.name, taco.ingredients as Ingredient[]);
 		const resFind = await this.tacoRepo.findByName(newTaco.name);
-		console.log(resFind);
 		if(resFind === null) {
 			return this.tacoRepo.create(newTaco);
 		}

@@ -50,7 +50,7 @@
 </div>
 
 <div class='recentTacos'>
-	<h1>Recent tacos</h1>
+	<h1>Recent 5 tacos</h1>
 	<table id='recentTacos'>
 		<thead>
 		<tr>
@@ -93,6 +93,7 @@ createTacoForm.addEventListener('submit', async (e) => {
 		body: JSON.stringify(createdTaco)
 	});
 	const qwe = await res.json();
+	//await fetchAllTacos();
 	let row = recentTacos.insertRow(1);
 	let cellName = row.insertCell(0);
 	let cellIngredients = row.insertCell(1);
@@ -100,20 +101,25 @@ createTacoForm.addEventListener('submit', async (e) => {
 	for(let el of qwe._ingredients) {
 		cellIngredients.innerHTML += `${el.name}: ${el.amount}; `;
 	}
+	if(recentTacos.rows.length > 5) {
+		recentTacos.deleteRow(recentTacos.rows.length-1);
+	}
 });
 
-window.addEventListener('load', async ()=> {
+window.addEventListener('load', fetchAllTacos);
+
+async function fetchAllTacos() {
 	const res = await fetch(baseUrl + "/findAll", {
 		method: "GET"
 	});
 	console.log(res.status);
 	const allTacos = await res.json();
+	allTacos.reverse()
 	for(let el of allTacos) {
 		if(el.name)
 			loadAllTacos(el);
 	}
-
-});
+}
 
 function loadAllTacos(taco) {
 	let row = recentTacos.insertRow(1);
